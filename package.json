@@ -1,6 +1,6 @@
 {
   "name": "@sipheron/vdr-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core document verification library for SipHeron VDR. Anchor document fingerprints to Solana. Verify authenticity forever.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
