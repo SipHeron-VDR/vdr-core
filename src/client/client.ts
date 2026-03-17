@@ -304,7 +304,7 @@ export class SipHeron {
       hash,
       transactionSignature: txSig,
       blockNumber: Number(anchor.blockNumber || blockchain.blockNumber || 0),
-      timestamp: String(anchor.blockTimestamp || anchor.createdAt || ''),
+      timestamp: String(anchor.blockTimestamp || anchor.createdAt || anchor.registeredAt || ''),
       verificationUrl: buildVerifyUrl(hash),
       explorerUrl: txSig
         ? buildExplorerUrl(txSig, this.config.network)

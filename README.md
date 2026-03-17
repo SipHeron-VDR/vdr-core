@@ -1,6 +1,15 @@
-# @sipheron/vdr-core
+<div align="center">
+  <img src="./sipheron_vdap_logo.png" alt="SipHeron VDR Logo" width="300" />
+  <h1>@sipheron/vdr-core</h1>
+  <p><strong>The Cryptographic Engine of SipHeron VDR.</strong></p>
+  
+  <p>
+    <a href="https://www.npmjs.com/package/@sipheron/vdr-core"><img src="https://img.shields.io/npm/v/@sipheron/vdr-core?color=blue&style=for-the-badge" alt="NPM Version" /></a>
+    <a href="https://github.com/SipHeron-VDR/vdr-core/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@sipheron/vdr-core?style=for-the-badge" alt="License" /></a>
+  </p>
+</div>
 
-**The Cryptographic Engine of SipHeron VDR.**
+---
 
 SipHeron VDR is a protocol for permanently notarizing documents to the Solana blockchain.
 `@sipheron/vdr-core` is the independent, foundational SDK that allows developers to interact with the SipHeron smart contract on Solana — either fully independently (no API key required) or via the managed SipHeron platform.
