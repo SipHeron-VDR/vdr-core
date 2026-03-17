@@ -1,6 +1,11 @@
 /**
  * Solana-specific utilities for the vdr-core library.
- *
+ * Includes explicit program constants.
+ */
+
+import { PublicKey } from '@solana/web3.js'
+
+/**
  * Note: This module provides utilities for working with Solana
  * transaction data — it does NOT handle transaction signing
  * or wallet key management. Those operations happen server-side
@@ -14,7 +19,20 @@ export const SOLANA_NETWORKS = {
   mainnet: 'https://api.mainnet-beta.solana.com',
 } as const
 
-export const SIPHERON_CONTRACT = '6ecWPUK87zxwZP2pARJ75wbpCka92mYSGP1szrJxzAwo'
+export const SIPHERON_CONTRACT_BASE58 = '6ecWPUK87zxwZP2pARJ75wbpCka92mYSGP1szrJxzAwo'
+
+export const SIPHERON_PROGRAM_ID = {
+  devnet: new PublicKey(SIPHERON_CONTRACT_BASE58),
+  mainnet: new PublicKey(SIPHERON_CONTRACT_BASE58)
+}
+
+export const ANCHOR_SEED = 'anchor'
+export const PROTOCOL_VERSION = 1
+export const MAX_BATCH_SIZE = 500
+export const HASH_LENGTH = 64
+export const CONFIRMATION_DEPTH = 32
+
+export const SIPHERON_CONTRACT = SIPHERON_CONTRACT_BASE58
 
 export const EXPLORER_URLS = {
   devnet: {

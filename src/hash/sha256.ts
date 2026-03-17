@@ -1,6 +1,7 @@
 import { createHash } from 'crypto'
 import { ValidationError } from '../errors'
 
+
 /**
  * Compute SHA-256 hash of a document buffer.
  *
@@ -24,6 +25,83 @@ export async function hashDocument(file: Buffer): Promise<string> {
   }
 
   return createHash('sha256').update(file).digest('hex')
+}
+
+/**
+ * Compute SHA-256 hash of a file on disk (Node.js only).
+ *
+ * @param filePath - Path to the file
+ * @returns 64-character lowercase hex string
+ */
+export async function hashFile(filePath: string): Promise<string> {
+  if (typeof globalThis !== 'undefined' && (globalThis as any).window !== undefined) {
+    throw new Error('hashFile is only available in Node.js environments.')
+  }
+  
+  const fs = await import('fs')
+  
+  if (!fs.existsSync(filePath)) {
+    throw new ValidationError(`File not found: ${filePath}`)
+  }
+
+  return new Promise((resolve, reject) => {
+    const hash = createHash('sha256')
+    const rs = fs.createReadStream(filePath)
+    rs.on('error', reject)
+    rs.on('data', chunk => hash.update(chunk))
+    rs.on('end', () => resolve(hash.digest('hex')))
+  })
+}
+
+/**
+ * Compute SHA-256 hash of a string to handle Base64 properly.
+ *
+ * @param base64 - Base64 encoded document string
+ * @returns 64-character lowercase hex string
+ */
+export async function hashBase64(base64: string): Promise<string> {
+  if (!base64 || typeof base64 !== 'string') {
+    throw new ValidationError('Valid base64 string is required')
+  }
+  const buffer = Buffer.from(base64, 'base64')
+  return hashDocument(buffer)
+}
+
+/**
+ * Compute SHA-256 hash from a Readable stream.
+ * Compatible with Node.js streams or Web Streams.
+ *
+ * @param stream - A readable stream
+ * @returns 64-character lowercase hex string
+ */
+export async function hashStream(stream: any): Promise<string> {
+  if (!stream) throw new ValidationError('Stream is required')
+
+  // Node.js stream
+  if (typeof stream.on === 'function') {
+    return new Promise((resolve, reject) => {
+      const hash = createHash('sha256')
+      stream.on('error', reject)
+      stream.on('data', (chunk: Buffer) => hash.update(chunk))
+      stream.on('end', () => resolve(hash.digest('hex')))
+    })
+  }
+  
+  // Web stream
+  if (typeof stream.getReader === 'function') {
+    const reader = stream.getReader()
+    const hash = createHash('sha256')
+    
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      hash.update(value)
+    }
+    
+    return hash.digest('hex')
+  }
+  
+  throw new ValidationError('Unsupported stream type provided to hashStream')
 }
 
 /**

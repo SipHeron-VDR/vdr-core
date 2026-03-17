@@ -21,9 +21,10 @@
 export { SipHeron } from './client'
 
 // ── Standalone functions ──
-export { hashDocument, isValidHash, normalizeHash } from './hash'
+export { hashDocument, hashFile, hashStream, hashBase64, isValidHash, normalizeHash } from './hash'
 export { verifyHashStandalone as verifyHash } from './verify'
-export { verifyLocally } from './verify'
+export { verifyLocally, verifyOnChain, deriveAnchorAddress } from './verify'
+export { verifyWebhookSignature, parseWebhookEvent } from './webhook'
 
 // ── Certificate utilities ──
 export {
@@ -39,6 +40,14 @@ export {
   isValidTxSignature,
   estimateAnchorCost,
   SIPHERON_CONTRACT,
+  SIPHERON_PROGRAM_ID,
+  ANCHOR_SEED,
+  PROTOCOL_VERSION,
+  MAX_BATCH_SIZE,
+  HASH_LENGTH,
+  CONFIRMATION_DEPTH,
+  SOLANA_NETWORKS,
+  anchorToSolana,
 } from './anchor'
 
 // ── Types ──
@@ -50,9 +59,13 @@ export type {
   AnchorStatus,
   BatchAnchorOptions,
   BatchAnchorResult,
+  DirectAnchorOptions,
+  DirectAnchorResult,
   VerifyOptions,
   VerificationResult,
   VerificationStatus,
+  OnChainVerificationOptions,
+  OnChainVerificationResult,
   WebhookEventType,
   WebhookEvent,
   AnchorCreatedEvent,
@@ -77,4 +90,6 @@ export {
   ValidationError,
   AnchorRevokedError,
   QuotaExceededError,
+  SolanaConnectionError,
+  TransactionError
 } from './errors'

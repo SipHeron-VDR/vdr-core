@@ -8,4 +8,6 @@ export {
   ValidationError,
   AnchorRevokedError,
   QuotaExceededError,
+  SolanaConnectionError,
+  TransactionError,
 } from './errors'
