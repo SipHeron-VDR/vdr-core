@@ -12,10 +12,20 @@ export type {
 } from './anchor'
 
 export type {
+  DirectAnchorOptions,
+  DirectAnchorResult
+} from '../anchor/direct'
+
+export type {
   VerifyOptions,
   VerificationResult,
   VerificationStatus,
 } from './verify'
+
+export type {
+  OnChainVerificationOptions,
+  OnChainVerificationResult
+} from '../verify/onchain'
 
 export type {
   WebhookEventType,

@@ -132,3 +132,23 @@ export class QuotaExceededError extends SipHeronError {
     this.name = 'QuotaExceededError'
   }
 }
+
+/**
+ * Thrown when connecting to a Solana RPC node fails.
+ */
+export class SolanaConnectionError extends SipHeronError {
+  constructor(message: string) {
+    super(message, 'SOLANA_CONNECTION_ERROR', 503)
+    this.name = 'SolanaConnectionError'
+  }
+}
+
+/**
+ * Thrown when a direct on-chain Solana transaction fails or is rejected.
+ */
+export class TransactionError extends SipHeronError {
+  constructor(message: string) {
+    super(message, 'TRANSACTION_ERROR', 400)
+    this.name = 'TransactionError'
+  }
+}

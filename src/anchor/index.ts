@@ -1,4 +1,6 @@
 export { hashDocument, prepareAnchor, mapToAnchorResult } from './anchor'
+export { anchorToSolana } from './direct'
+export type { DirectAnchorOptions, DirectAnchorResult } from './direct'
 export {
   DEFAULT_CONFIRMATION,
   MIN_CONFIRMATIONS,
@@ -10,6 +12,12 @@ export {
 export {
   SOLANA_NETWORKS,
   SIPHERON_CONTRACT,
+  SIPHERON_PROGRAM_ID,
+  ANCHOR_SEED,
+  PROTOCOL_VERSION,
+  MAX_BATCH_SIZE,
+  HASH_LENGTH,
+  CONFIRMATION_DEPTH,
   EXPLORER_URLS,
   getExplorerUrl,
   isValidTxSignature,
