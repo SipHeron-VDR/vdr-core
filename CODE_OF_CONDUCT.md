@@ -1,4 +1,4 @@
-# 🤝 Governance & Institutional Core Standards
+# Code of Conduct
 
 The SipHeron ecosystem fundamentally values rigorous open-source architectural implementation, formal verifiable evidence, and respectful interdisciplinary engineering collaboration. This ethical framework governs the operational standards of our interactions.
 
