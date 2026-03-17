@@ -19,7 +19,7 @@ The SipHeron ecosystem fundamentally values rigorous open-source architectural i
 
 Operational anomalies traversing outside ethical limitations must invoke an immediate evaluation sequence. 
 
-**Formulate direct interaction reports to:** `hello@sipheron.com`
+**Formulate direct interaction reports to:** `security@sipheron.com`
 
 This architectural ecosystem framework adheres to the parameters derived from the
 [Contributor Covenant](https://www.contributor-covenant.org/) v2.1
