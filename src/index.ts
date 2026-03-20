@@ -47,6 +47,7 @@ export { SipHeron } from './client'
 
 // ── Standalone functions ──
 export { hashDocument, hashFile, hashFileStream, hashFileWithProgress, hashStream, hashBase64, isValidHash, normalizeHash } from './hash'
+export { hashDocumentBrowser, hashAuto } from './hash'
 export { verifyHashStandalone as verifyHash } from './verify'
 export { verifyLocally, verifyOnChain, deriveAnchorAddress } from './verify'
 export { verifyWebhookSignature, parseWebhookEvent } from './webhook'

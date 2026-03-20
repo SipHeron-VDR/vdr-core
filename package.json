@@ -1,9 +1,21 @@
 {
   "name": "@sipheron/vdr-core",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "SipHeron VDR Official JavaScript/TypeScript SDK. Cryptographically anchor documents to Solana.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/hash/browser.d.ts",
+      "require": "./dist/hash/browser.js",
+      "default": "./dist/hash/browser.js"
+    }
+  },
   "files": [
     "dist",
     "examples",
