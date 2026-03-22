@@ -39,6 +39,11 @@ export interface VerifyOptions {
   hash?: string
   /** Verify against a specific anchor ID */
   anchorId?: string
+  /** 
+   * Bypass the local verification cache. 
+   * If true, forces a network check even if a valid cached result exists.
+   */
+  noCache?: boolean
 }
 
 export type VerificationStatus =
@@ -64,4 +69,8 @@ export interface VerificationResult {
   anchor?: AnchorResult
   /** The hash from the anchor record (for mismatch comparison) */
   anchoredHash?: string
+  /** True if the result was retrieved from the local cache. */
+  fromCache?: boolean
+  /** The original timestamp when this result was first entered into the cache. */
+  cachedTimestamp?: number
 }

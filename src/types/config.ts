@@ -33,4 +33,16 @@ export interface SipHeronConfig {
   retries?: number
   /** Override the base API URL. Default: https://api.sipheron.com */
   baseUrl?: string
+  /** 
+   * Local verification cache configuration. 
+   * If provided, verified results are stored locally to speed up repeat lookups.
+   */
+  cache?: {
+    /** TTL in milliseconds. Default: 300000 (5 minutes) */
+    ttlMs?: number
+    /** Max entries to store. Default: 1000 */
+    maxEntries?: number
+    /** File path for disk persistence. */
+    persistPath?: string
+  }
 }
