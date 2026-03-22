@@ -43,6 +43,7 @@ import type { ResolvedConfig } from './config'
 import { createHttpClient, withRetry } from './http'
 import { hashDocument, isValidHash, normalizeHash } from '../hash'
 import { ValidationError, AnchorRevokedError, AuthenticationError } from '../errors'
+import { VerificationCache } from '../verify/cache'
 
 /**
  * Main SipHeron VDR client.
@@ -55,10 +56,15 @@ import { ValidationError, AnchorRevokedError, AuthenticationError } from '../err
 export class SipHeron {
   private readonly config: ResolvedConfig
   private readonly http: AxiosInstance
+  private readonly verifyCache?: VerificationCache
 
   constructor(config: SipHeronConfig) {
     this.config = resolveConfig(config)
     this.http = createHttpClient(this.config)
+    
+    if (this.config.cache) {
+      this.verifyCache = new VerificationCache(this.config.cache)
+    }
   }
 
   /**
@@ -249,6 +255,12 @@ export class SipHeron {
 
     const endpoint = !this.config.apiKey ? '/api/playground/verify' : '/api/verify'
 
+    // Check cache first
+    if (!options.noCache && this.verifyCache) {
+      const cached = this.verifyCache.get(hash)
+      if (cached) return cached
+    }
+
     const response = await withRetry(
       () => this.http.post(endpoint, { hash }),
       this.config.retries
@@ -265,7 +277,7 @@ export class SipHeron {
       )
     }
 
-    return {
+    const result: VerificationResult = {
       authentic: data.authentic === true,
       status: this._mapVerifyStatus(data.status),
       hash,
@@ -273,6 +285,13 @@ export class SipHeron {
       anchor: data.anchor ? this._mapAnchorResponse(data) : undefined,
       anchoredHash: data.anchor?.hash,
     }
+
+    // Store in cache
+    if (this.verifyCache) {
+      this.verifyCache.set(hash, result)
+    }
+
+    return result
   }
 
   /**

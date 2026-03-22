@@ -50,6 +50,11 @@ export interface ResolvedConfig {
   appUrl: string
   contractAddress: string
   explorerBase: string
+  cache?: {
+    ttlMs: number
+    maxEntries: number
+    persistPath?: string
+  }
 }
 
 export function resolveConfig(config: SipHeronConfig): ResolvedConfig {
@@ -70,6 +75,13 @@ export function resolveConfig(config: SipHeronConfig): ResolvedConfig {
     appUrl: DEFAULTS.appUrl,
     contractAddress: DEFAULTS.contractAddress,
     explorerBase: DEFAULTS.explorerBase[network],
+    ...(config.cache && {
+      cache: {
+        ttlMs: config.cache.ttlMs ?? 300_000,
+        maxEntries: config.cache.maxEntries ?? 1000,
+        persistPath: config.cache.persistPath
+      }
+    })
   }
 }
 
