@@ -185,7 +185,7 @@ export async function hashAuto(
 
   // ── Path 1: Node.js Buffer → use native crypto (fastest) ───────────────
   if (typeof Buffer !== 'undefined' && Buffer.isBuffer(input)) {
-    const { hashDocument } = await import('./sha256')
+    const { hashDocument } = await import('./algorithms')
     return hashDocument(input)
   }
 
@@ -203,7 +203,7 @@ export async function hashAuto(
   if (input instanceof ArrayBuffer || input instanceof Uint8Array) {
     // If Node.js Buffer is available, convert and use native crypto (faster)
     if (typeof Buffer !== 'undefined') {
-      const { hashDocument } = await import('./sha256')
+      const { hashDocument } = await import('./algorithms')
       const buf =
         input instanceof ArrayBuffer
           ? Buffer.from(input)
