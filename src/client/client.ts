@@ -356,10 +356,20 @@ export class SipHeron {
    * @param hash - 64-character SHA-256 hash
    * @returns AnchorResult with current status
    */
-  async getStatus(hash: string): Promise<AnchorResult> {
-    const normalized = normalizeHash(hash)
-    if (!isValidHash(normalized)) {
-      throw new ValidationError('Invalid hash format.')
+  async getStatus(hashOrId: string): Promise<AnchorResult> {
+    let normalized = hashOrId.toLowerCase()
+    const isId = normalized.includes('-') || normalized.startsWith('anc_')
+    if (!isId && !isValidHash(normalized)) {
+      throw new ValidationError('Invalid reference format. Must be a SHA-256 hash or an Anchor ID.')
+    }
+
+    if (isId && this.config.apiKey) {
+      // Backwards compatibility for backends that haven't updated /status to accept UUIDs
+      const chain = await this.anchors.getVersionChain(normalized).catch(() => [])
+      const match = chain.find((c: any) => c.id === normalized) || chain[0]
+      if (match && match.hash) {
+        normalized = match.hash
+      }
     }
 
     const endpoint = !this.config.apiKey 
