@@ -57,3 +57,15 @@ export type {
   QuotaWarningEvent,
   AnomalyDetectedEvent,
 } from './events'
+
+export type {
+  PipelineEventType,
+  PipelineEventPayload,
+  PipelineEventResult,
+  BatchPipelineEventPayload,
+  BatchPipelineEventResult,
+  PipelineConfig,
+  PipelineSessionSummary,
+  ComplianceFramework,
+  RiskLevel
+} from './pipeline'

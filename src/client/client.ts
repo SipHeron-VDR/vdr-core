@@ -37,7 +37,7 @@ import type {
   HashAlgorithm,
   VerifyOptions,
   VerificationResult,
-  RevocationReason,
+  RevocationReason
 } from '../types'
 import { anchorBatch, BatchAnchorOptions, BatchAnchorResult } from '../anchor/batch'
 import { resolveConfig, buildExplorerUrl, buildVerifyUrl } from './config'
@@ -46,6 +46,7 @@ import { createHttpClient, withRetry } from './http'
 import { hashDocument, isValidHash, normalizeHash, getAlgorithmInfo } from '../hash'
 import { ValidationError, AuthenticationError } from '../errors'
 import { VerificationCache } from '../verify/cache'
+import { PipelineModule } from '../pipeline'
 
 /**
  * Main SipHeron VDR client.
@@ -69,30 +70,49 @@ export class SipHeron {
       if (!this.config.apiKey) {
         throw new AuthenticationError('apiKey is required to revoke anchors.')
       }
-      await withRetry(
-        () => this.http.post(`/api/anchors/${anchorId}/revoke`, options),
-        this.config.retries
-      )
+      await this.request('POST', `/api/anchors/${anchorId}/revoke`, options)
     },
     getVersionChain: async (anchorId: string): Promise<AnchorResult[]> => {
       const endpoint = !this.config.apiKey 
         ? `/api/playground/chain/${anchorId}` 
         : `/api/hashes/${anchorId}/chain`
-      const response = await withRetry(
-        () => this.http.get(endpoint),
-        this.config.retries
-      )
-      return response.data.chain.map((c: any) => this._mapAnchorResponse(c))
+      const data = await this.request('GET', endpoint)
+      return data.chain.map((c: any) => this._mapAnchorResponse(c))
     }
   }
+
+  public readonly pipeline: PipelineModule
 
   constructor(config: SipHeronConfig) {
     this.config = resolveConfig(config)
     this.http = createHttpClient(this.config)
+    this.pipeline = new PipelineModule(this)
     
     if (this.config.cache) {
       this.verifyCache = new VerificationCache(this.config.cache)
     }
+  }
+
+  /**
+   * Internal request helper with retry logic.
+   * @internal
+   */
+  public async request<T = any>(
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    url: string,
+    data?: any,
+    params?: any
+  ): Promise<T> {
+    const response = await withRetry(
+      () => this.http.request({
+        method,
+        url,
+        data,
+        params,
+      }),
+      this.config.retries
+    )
+    return response.data
   }
 
   /**
